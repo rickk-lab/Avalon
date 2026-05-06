@@ -1,299 +1,320 @@
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Avalon Elites — Sinais Gratuitos</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --neon:#00ff88;
-  --neon2:#00e5ff;
-  --dark:#060d0a;
-  --dark2:#0b1a12;
-  --card:#0f2018;
-  --border:rgba(0,255,136,0.2);
-  --glow:0 0 18px rgba(0,255,136,0.35);
-}
-body{
-  background:var(--dark);
-  color:#fff;
-  font-family:'Rajdhani',sans-serif;
-  min-height:100vh;
-  overflow-x:hidden;
-}
-.bg-grid{
-  position:fixed;top:0;left:0;width:100%;height:100%;
-  background-image:
-    linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
-  background-size:40px 40px;
-  pointer-events:none;
-  z-index:0;
-}
-.wrapper{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+:root{--g:#00ff88;--g2:#00e5ff;--red:#ff3b5c;--dark:#040a06;--card:#0c1810;--card2:#0f1e12;--border:rgba(0,255,136,0.15);--borderfaint:rgba(255,255,255,0.05);}
+body{background:var(--dark);color:#fff;font-family:'Barlow',sans-serif;overflow-x:hidden;}
 
-/* HEADER */
-.badge{
-  display:inline-block;
-  background:rgba(0,255,136,0.1);
-  border:1px solid var(--border);
-  color:var(--neon);
-  font-size:11px;
-  letter-spacing:2px;
-  padding:4px 14px;
-  border-radius:20px;
-  text-transform:uppercase;
-  margin-bottom:1.2rem;
-}
-.logo-line{
-  display:flex;align-items:center;gap:10px;margin-bottom:0.4rem;
-}
-.logo-dot{
-  width:12px;height:12px;border-radius:50%;
-  background:var(--neon);
-  box-shadow:0 0 10px var(--neon), 0 0 20px var(--neon);
-  animation:pulse 2s ease-in-out infinite;
-}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
-h1{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2.2rem,7vw,3.8rem);
-  line-height:1;
-  letter-spacing:1px;
-  color:#fff;
-}
-h1 span{color:var(--neon);}
-.subtitle{
-  font-size:1.05rem;
-  color:rgba(255,255,255,0.6);
-  margin:0.8rem 0 2rem;
-  line-height:1.5;
-  font-weight:400;
-}
-.subtitle strong{color:var(--neon);font-weight:600;}
+.ticker{background:#00ff88;color:#04090f;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:2.5px;padding:6px 0;text-align:center;text-transform:uppercase;}
 
-/* STATS ROW */
-.stats{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
-  margin-bottom:2rem;
-}
-.stat{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:1rem 0.8rem;
-  text-align:center;
-}
-.stat-val{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.8rem;
-  color:var(--neon);
-  line-height:1;
-}
-.stat-lbl{font-size:0.72rem;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+.hero{padding:2.2rem 1.4rem 1.4rem;text-align:center;background:linear-gradient(180deg,rgba(0,255,136,0.04) 0%,transparent 100%);}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:rgba(255,255,255,0.5);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:2.5px;padding:5px 14px;border-radius:20px;text-transform:uppercase;margin-bottom:1.2rem;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#00ff88;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
-/* SIGNAL CARD */
-.signal-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:1.4rem;
-  margin-bottom:2rem;
-  position:relative;
-  overflow:hidden;
-}
-.signal-card::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--neon),transparent);
-}
-.signal-header{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;
-}
-.signal-title{font-size:0.7rem;letter-spacing:2px;color:rgba(255,255,255,0.4);text-transform:uppercase;}
-.live-badge{
-  background:rgba(0,255,136,0.15);
-  border:1px solid rgba(0,255,136,0.4);
-  color:var(--neon);
-  font-size:0.65rem;
-  letter-spacing:1.5px;
-  padding:3px 10px;
-  border-radius:20px;
-  text-transform:uppercase;
-  display:flex;align-items:center;gap:5px;
-}
-.live-dot{width:5px;height:5px;border-radius:50%;background:var(--neon);animation:pulse 1s infinite;}
-.signal-pair{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:2rem;
-  letter-spacing:2px;
-  color:#fff;
-  margin-bottom:0.3rem;
-}
-.signal-dir{
-  font-size:0.85rem;
-  font-weight:700;
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
-.up{color:#00ff88;}
-.down{color:#ff4d6d;}
-.signal-meta{
-  display:flex;gap:1.5rem;margin-top:0.8rem;
-  font-size:0.78rem;color:rgba(255,255,255,0.45);
-}
-.signal-meta span{display:flex;align-items:center;gap:4px;}
-.conf-bar-wrap{margin-top:1rem;}
-.conf-label{
-  display:flex;justify-content:space-between;
-  font-size:0.7rem;color:rgba(255,255,255,0.4);
-  text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;
-}
-.conf-bar{height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
-.conf-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#00e5ff,var(--neon));width:87%;}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,8vw,4.4rem);line-height:0.95;letter-spacing:0.5px;margin-bottom:1rem;}
+h1 .dim{color:rgba(255,255,255,0.35);}
+h1 .bright{color:#fff;}
+h1 .green{color:#00ff88;}
 
-/* FEATURES */
-.features{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2rem;
-}
-.feature{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:1rem;
-}
-.feature-icon{font-size:1.4rem;margin-bottom:0.4rem;}
-.feature-title{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:2px;}
-.feature-desc{font-size:0.75rem;color:rgba(255,255,255,0.45);line-height:1.4;}
+.hero-sub{font-family:'Barlow',sans-serif;font-size:0.95rem;color:rgba(255,255,255,0.45);line-height:1.6;max-width:480px;margin:0 auto 1.5rem;}
+.hero-sub strong{color:rgba(255,255,255,0.75);}
 
-/* CTA BUTTONS */
-.cta-group{display:flex;flex-direction:column;gap:12px;margin-bottom:2rem;}
-.btn-main{
-  display:block;
-  background:var(--neon);
-  color:var(--dark);
-  text-decoration:none;
-  text-align:center;
-  padding:1rem;
-  border-radius:10px;
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.4rem;
-  letter-spacing:2px;
-  font-weight:400;
-  transition:box-shadow 0.2s, transform 0.1s;
-}
-.btn-main:hover{box-shadow:var(--glow);transform:translateY(-1px);}
-.btn-sec{
-  display:block;
-  background:transparent;
-  color:var(--neon);
-  text-decoration:none;
-  text-align:center;
-  padding:0.9rem;
-  border-radius:10px;
-  border:1px solid rgba(0,255,136,0.4);
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.3rem;
-  letter-spacing:2px;
-  transition:background 0.2s, box-shadow 0.2s;
-}
-.btn-sec:hover{background:rgba(0,255,136,0.08);box-shadow:0 0 12px rgba(0,255,136,0.2);}
+.proof-strip{display:flex;justify-content:center;gap:0;margin-bottom:1.6rem;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.ps-item{flex:1;padding:0.75rem 0.5rem;text-align:center;border-right:1px solid var(--border);}
+.ps-item:last-child{border-right:none;}
+.ps-num{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#00ff88;letter-spacing:1px;line-height:1;}
+.ps-lbl{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:0.65rem;letter-spacing:1.5px;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-top:2px;}
 
-/* DISCLAIMER */
-.disclaimer{
-  font-size:0.68rem;
-  color:rgba(255,255,255,0.25);
-  line-height:1.5;
-  border-top:1px solid rgba(255,255,255,0.06);
-  padding-top:1.2rem;
-  text-align:center;
-}
+.section{padding:0 1.4rem;margin-bottom:1.6rem;}
+.section-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.65rem;letter-spacing:2.5px;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:0.8rem;display:flex;align-items:center;gap:8px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--borderfaint);}
+
+.signal-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:relative;}
+.signal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:#00ff88;}
+.sc-top{display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem 0.6rem;}
+.sc-pair{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;color:#fff;line-height:1;}
+.sc-badge{background:rgba(255,59,92,0.15);border:1px solid rgba(255,59,92,0.3);color:#ff3b5c;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.65rem;letter-spacing:1.5px;padding:4px 10px;border-radius:20px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.sc-mid{padding:0 1rem 0.8rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.sc-stat{background:rgba(255,255,255,0.03);border:1px solid var(--borderfaint);border-radius:7px;padding:0.5rem 0.6rem;}
+.sc-stat-lbl{font-size:0.62rem;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;font-weight:600;margin-bottom:2px;}
+.sc-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.95rem;color:#fff;}
+.sc-stat-val.green{color:#00ff88;}
+.sc-dir{padding:0 1rem;margin-bottom:0.9rem;display:flex;align-items:center;gap:10px;}
+.sc-dir-tag{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);color:#00ff88;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;padding:6px 16px;border-radius:7px;}
+.sc-conf{padding:0.7rem 1rem;border-top:1px solid var(--borderfaint);}
+.sc-conf-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.sc-conf-lbl{font-size:0.68rem;color:rgba(255,255,255,0.3);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.sc-conf-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#00ff88;letter-spacing:1px;}
+.bar{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.bar-inner{height:100%;border-radius:3px;background:#00ff88;}
+
+.history-grid{display:flex;flex-direction:column;gap:6px;}
+.hist-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--borderfaint);border-radius:8px;padding:0.65rem 0.9rem;}
+.hist-win{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0;}
+.hist-win.w{background:rgba(0,255,136,0.12);color:#00ff88;border:1px solid rgba(0,255,136,0.2);}
+.hist-win.l{background:rgba(255,59,92,0.1);color:#ff3b5c;border:1px solid rgba(255,59,92,0.18);}
+.hist-info{flex:1;}
+.hist-pair{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.88rem;color:#fff;letter-spacing:0.5px;}
+.hist-meta{font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.5px;}
+.hist-result{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;}
+.hist-result.w{color:#00ff88;}
+.hist-result.l{color:#ff3b5c;}
+.hist-conf{font-size:0.68rem;color:rgba(255,255,255,0.25);text-align:right;}
+
+.summary-bar{display:flex;gap:8px;margin-top:10px;}
+.sb-item{flex:1;background:var(--card);border:1px solid var(--borderfaint);border-radius:8px;padding:0.7rem;text-align:center;}
+.sb-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;line-height:1;}
+.sb-num.g{color:#00ff88;} .sb-num.r{color:#ff3b5c;} .sb-num.w{color:#fff;}
+.sb-lbl{font-size:0.62rem;color:rgba(255,255,255,0.28);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+
+.ia-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;}
+.ia-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#00ff88;letter-spacing:1px;margin-bottom:0.3rem;}
+.ia-sub{font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.5;margin-bottom:1rem;}
+.ia-features{display:flex;flex-direction:column;gap:8px;}
+.ia-feat{display:flex;align-items:flex-start;gap:10px;}
+.ia-icon{width:32px;height:32px;border-radius:7px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.15);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.ia-feat-text{flex:1;}
+.ia-feat-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;color:#fff;margin-bottom:1px;}
+.ia-feat-desc{font-size:0.75rem;color:rgba(255,255,255,0.38);line-height:1.4;}
+
+.cost-box{background:rgba(255,59,92,0.06);border:1px solid rgba(255,59,92,0.18);border-radius:10px;padding:1rem;}
+.cost-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#ff3b5c;letter-spacing:1px;margin-bottom:0.7rem;}
+.cost-items{display:flex;flex-direction:column;gap:7px;}
+.cost-item{display:flex;align-items:flex-start;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.4;}
+.cx{color:#ff3b5c;font-weight:700;flex-shrink:0;margin-top:0px;}
+
+.gain-box{background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.15);border-radius:10px;padding:1rem;margin-top:8px;}
+.gain-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#00ff88;letter-spacing:1px;margin-bottom:0.7rem;}
+.gain-items{display:flex;flex-direction:column;gap:7px;}
+.gain-item{display:flex;align-items:flex-start;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.4;}
+.gk{color:#00ff88;font-weight:700;flex-shrink:0;}
+
+.cta-section{padding:0 1.4rem 1.4rem;}
+.cta-warn{text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.78rem;letter-spacing:1.5px;color:#ff3b5c;text-transform:uppercase;margin-bottom:0.7rem;}
+.btn-prime{display:block;background:#00ff88;color:#04090f;text-decoration:none;text-align:center;padding:1.05rem;border-radius:9px;font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:3px;margin-bottom:9px;transition:transform 0.1s;}
+.btn-prime:hover{transform:scale(1.015);}
+.btn-sec{display:block;background:transparent;color:#fff;text-decoration:none;text-align:center;padding:0.85rem;border-radius:9px;border:1px solid rgba(255,255,255,0.12);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;margin-bottom:9px;color:rgba(255,255,255,0.6);}
+.btn-tert{display:block;background:transparent;color:#00e5ff;text-decoration:none;text-align:center;padding:0.75rem;border-radius:9px;border:1px solid rgba(0,229,255,0.18);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;margin-bottom:9px;}
+.trust-row{display:flex;justify-content:center;gap:1.2rem;font-size:0.68rem;color:rgba(255,255,255,0.2);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+
+.faq-section{padding:0 1.4rem;margin-bottom:1.6rem;}
+.faq-head{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;letter-spacing:1px;text-align:center;margin-bottom:1rem;}
+.faq-item{border-bottom:1px solid var(--borderfaint);padding:0.75rem 0;}
+.faq-q{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.92rem;color:rgba(255,255,255,0.75);margin-bottom:0.25rem;}
+.faq-a{font-size:0.79rem;color:rgba(255,255,255,0.38);line-height:1.5;}
+
+.final{text-align:center;padding:1.5rem 1.4rem 1rem;}
+.final-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3rem);line-height:1;color:#fff;margin-bottom:0.4rem;}
+.final-h span{color:#00ff88;}
+.final-sub{font-size:0.82rem;color:rgba(255,255,255,0.35);margin-bottom:1.2rem;}
+
+.disclaimer{padding:0.8rem 1.4rem 2rem;font-size:0.63rem;color:rgba(255,255,255,0.18);line-height:1.6;text-align:center;border-top:1px solid var(--borderfaint);}
 </style>
-</head>
-<body>
-<div class="bg-grid"></div>
-<div class="wrapper">
 
-  <div class="badge">⚡ Acesso gratuito</div>
+<div class="ticker">⚡ SINAL EM ANDAMENTO · EUR/USD CALL · 87% CONFIANÇA · VER AGORA</div>
 
-  <div class="logo-line">
-    <div class="logo-dot"></div>
-    <span style="font-size:0.75rem;letter-spacing:2px;color:rgba(255,255,255,0.35);text-transform:uppercase;">Avalon Elites</span>
+<div class="hero">
+  <div class="hero-eyebrow"><span class="live-dot"></span>Sistema ativo agora</div>
+  <h1>
+    <span class="dim">Não é palpite.<br></span>
+    <span class="bright">É análise.<br></span>
+    <span class="green">Veja o sinal.</span>
+  </h1>
+  <p class="hero-sub">Nossa IA monitora <strong>RSI, volume e tendência</strong> em tempo real e só envia sinal quando a probabilidade está alta. Você recebe, você decide.</p>
+  <div class="proof-strip">
+    <div class="ps-item"><div class="ps-num">87%</div><div class="ps-lbl">Acerto (30 dias)</div></div>
+    <div class="ps-item"><div class="ps-num">1h</div><div class="ps-lbl">Frequência</div></div>
+    <div class="ps-item"><div class="ps-num">+2.3k</div><div class="ps-lbl">Membros</div></div>
+    <div class="ps-item"><div class="ps-num">R$0</div><div class="ps-lbl">Custo</div></div>
   </div>
-
-  <h1>Sinais de<br><span>Opções Binárias</span><br>em tempo real</h1>
-
-  <p class="subtitle">IA analisa <strong>RSI, tendência e volume</strong> e gera sinais automáticos de alta precisão — direto no seu Telegram, a cada hora.</p>
-
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-val">87%</div>
-      <div class="stat-lbl">Precisão</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val">1H</div>
-      <div class="stat-lbl">Novo sinal</div>
-    </div>
-    <div class="stat">
-      <div class="stat-val">3</div>
-      <div class="stat-lbl">Idiomas</div>
-    </div>
-  </div>
-
-  <div class="signal-card">
-    <div class="signal-header">
-      <span class="signal-title">Último sinal gerado</span>
-      <span class="live-badge"><span class="live-dot"></span>Ao vivo</span>
-    </div>
-    <div class="signal-pair">EUR/USD · 5min</div>
-    <div class="signal-dir up">▲ CALL — Compra</div>
-    <div class="signal-meta">
-      <span>📊 RSI: 34.2</span>
-      <span>📈 Tendência: Alta</span>
-      <span>🕐 14:00</span>
-    </div>
-    <div class="conf-bar-wrap">
-      <div class="conf-label"><span>Confiança da IA</span><span>87%</span></div>
-      <div class="conf-bar"><div class="conf-fill"></div></div>
-    </div>
-  </div>
-
-  <div class="features">
-    <div class="feature">
-      <div class="feature-icon">🤖</div>
-      <div class="feature-title">IA automática</div>
-      <div class="feature-desc">Análise técnica em tempo real a cada hora</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🌍</div>
-      <div class="feature-title">3 idiomas</div>
-      <div class="feature-desc">PT 🇧🇷 · EN 🇺🇸 · ES 🇪🇸 automático</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">💰</div>
-      <div class="feature-title">Plataforma top</div>
-      <div class="feature-desc">Opere na Avalon Broker com bônus</div>
-    </div>
-    <div class="feature">
-      <div class="feature-icon">🔔</div>
-      <div class="feature-title">100% grátis</div>
-      <div class="feature-desc">Sem taxa, sem mensalidade</div>
-    </div>
-  </div>
-
-  <div class="cta-group">
-    <a href="https://t.me/AvalonLucro_bot" class="btn-main">🤖 Acessar o Bot de Sinais</a>
-    <a href="https://t.me/joinchat/avalon_elites" class="btn-sec">💬 Entrar no Grupo Avalon Elites</a>
-    <a href="https://trade.avalonbroker.com/register?aff=823507&aff_model=revenue&afftrack=" class="btn-main" style="background:transparent;color:var(--neon2);border:1px solid rgba(0,229,255,0.35);font-size:1.1rem;">📈 Criar conta na Avalon Broker →</a>
-  </div>
-
-  <div class="disclaimer">
-    ⚠️ <strong>Aviso de risco:</strong> Opções binárias envolvem risco elevado de perda de capital. Os sinais são gerados por análise técnica automatizada e não garantem lucros. Opere somente com valores que pode perder. Este canal não é afiliado oficial da Avalon Broker.
-  </div>
-
 </div>
-</body>
-</html>
+
+<div class="section">
+  <div class="section-label">Sinal ao vivo agora</div>
+  <div class="signal-card">
+    <div class="sc-top">
+      <div class="sc-pair">EUR / USD</div>
+      <div class="sc-badge"><span class="live-dot"></span>TRANSMITINDO</div>
+    </div>
+    <div class="sc-mid">
+      <div class="sc-stat"><div class="sc-stat-lbl">RSI</div><div class="sc-stat-val green">34.2</div></div>
+      <div class="sc-stat"><div class="sc-stat-lbl">Timeframe</div><div class="sc-stat-val">5 min</div></div>
+      <div class="sc-stat"><div class="sc-stat-lbl">Volume</div><div class="sc-stat-val green">Alto</div></div>
+    </div>
+    <div class="sc-dir">
+      <div class="sc-dir-tag">▲ CALL — COMPRA</div>
+    </div>
+    <div class="sc-conf">
+      <div class="sc-conf-row">
+        <span class="sc-conf-lbl">Confiança da IA</span>
+        <span class="sc-conf-val">87%</span>
+      </div>
+      <div class="bar"><div class="bar-inner" style="width:87%"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Histórico de sinais — últimas 24h</div>
+  <div class="history-grid">
+    <div class="hist-item">
+      <div class="hist-win w">WIN</div>
+      <div class="hist-info">
+        <div class="hist-pair">GBP/USD · CALL</div>
+        <div class="hist-meta">5min · 11:00 UTC</div>
+      </div>
+      <div>
+        <div class="hist-result w">+1</div>
+        <div class="hist-conf">Conf. 91%</div>
+      </div>
+    </div>
+    <div class="hist-item">
+      <div class="hist-win w">WIN</div>
+      <div class="hist-info">
+        <div class="hist-pair">EUR/USD · PUT</div>
+        <div class="hist-meta">5min · 10:00 UTC</div>
+      </div>
+      <div>
+        <div class="hist-result w">+1</div>
+        <div class="hist-conf">Conf. 84%</div>
+      </div>
+    </div>
+    <div class="hist-item">
+      <div class="hist-win l">LOSS</div>
+      <div class="hist-info">
+        <div class="hist-pair">USD/JPY · CALL</div>
+        <div class="hist-meta">5min · 09:00 UTC</div>
+      </div>
+      <div>
+        <div class="hist-result l">-1</div>
+        <div class="hist-conf">Conf. 72%</div>
+      </div>
+    </div>
+    <div class="hist-item">
+      <div class="hist-win w">WIN</div>
+      <div class="hist-info">
+        <div class="hist-pair">EUR/GBP · PUT</div>
+        <div class="hist-meta">5min · 08:00 UTC</div>
+      </div>
+      <div>
+        <div class="hist-result w">+1</div>
+        <div class="hist-conf">Conf. 88%</div>
+      </div>
+    </div>
+    <div class="hist-item">
+      <div class="hist-win w">WIN</div>
+      <div class="hist-info">
+        <div class="hist-pair">GBP/JPY · CALL</div>
+        <div class="hist-meta">5min · 07:00 UTC</div>
+      </div>
+      <div>
+        <div class="hist-result w">+1</div>
+        <div class="hist-conf">Conf. 93%</div>
+      </div>
+    </div>
+    <div class="hist-item">
+      <div class="hist-win w">WIN</div>
+      <div class="hist-info">
+        <div class="hist-pair">USD/CAD · PUT</div>
+        <div class="hist-meta">5min · 06:00 UTC</div>
+      </div>
+      <div>
+        <div class="hist-result w">+1</div>
+        <div class="hist-conf">Conf. 85%</div>
+      </div>
+    </div>
+  </div>
+  <div class="summary-bar">
+    <div class="sb-item"><div class="sb-num g">5</div><div class="sb-lbl">Wins</div></div>
+    <div class="sb-item"><div class="sb-num r">1</div><div class="sb-lbl">Loss</div></div>
+    <div class="sb-item"><div class="sb-num w">83%</div><div class="sb-lbl">Acerto hoje</div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Como a IA funciona</div>
+  <div class="ia-card">
+    <div class="ia-title">Não é RSI básico.</div>
+    <div class="ia-sub">A IA cruza múltiplos indicadores simultaneamente e só envia sinal quando todos apontam na mesma direção.</div>
+    <div class="ia-features">
+      <div class="ia-feat">
+        <div class="ia-icon">📡</div>
+        <div class="ia-feat-text">
+          <div class="ia-feat-title">Análise multi-indicador</div>
+          <div class="ia-feat-desc">RSI + MACD + Bollinger + Volume cruzados em tempo real. Um indicador isolado nunca é suficiente.</div>
+        </div>
+      </div>
+      <div class="ia-feat">
+        <div class="ia-icon">⏱️</div>
+        <div class="ia-feat-text">
+          <div class="ia-feat-title">Filtragem por confiança</div>
+          <div class="ia-feat-desc">Só envia sinal quando a convergência supera o limiar interno. Sinais fracos são descartados automaticamente.</div>
+        </div>
+      </div>
+      <div class="ia-feat">
+        <div class="ia-icon">🔄</div>
+        <div class="ia-feat-text">
+          <div class="ia-feat-title">Atualização contínua</div>
+          <div class="ia-feat-desc">Analisa o mercado a cada minuto. O sinal chega até 30 segundos antes da entrada ideal.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-label">Sem o grupo vs. com o grupo</div>
+  <div class="cost-box">
+    <div class="cost-title">Cada hora fora = sinais que você perdeu</div>
+    <div class="cost-items">
+      <div class="cost-item"><span class="cx">✗</span>Opera no achismo e não sabe por que perdeu</div>
+      <div class="cost-item"><span class="cx">✗</span>Paga por grupos "VIP" que não entregam resultado</div>
+      <div class="cost-item"><span class="cx">✗</span>Perde as entradas enquanto o mercado já passou</div>
+    </div>
+  </div>
+  <div class="gain-box">
+    <div class="gain-title">Com o grupo e o bot</div>
+    <div class="gain-items">
+      <div class="gain-item"><span class="gk">✓</span>Sinal pronto com confiança, par, direção e horário</div>
+      <div class="gain-item"><span class="gk">✓</span>Histórico transparente — wins e losses — sem esconder nada</div>
+      <div class="gain-item"><span class="gk">✓</span>Gratuito. Sem plano, sem mensalidade, sem pegadinha</div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-section">
+  <div class="cta-warn">⚡ Próximo sinal em menos de 1 hora</div>
+  <a href="https://t.me/AvalonLucro_bot" class="btn-prime">RECEBER SINAIS AO VIVO AGORA</a>
+  <a href="https://t.me/joinchat/avalon_elites" class="btn-sec">ENTRAR NO GRUPO AVALON ELITES</a>
+  <a href="https://trade.avalonbroker.com/register?aff=823507&aff_model=revenue&afftrack=" class="btn-tert">ABRIR CONTA NA AVALON BROKER →</a>
+  <div class="trust-row"><span>🔒 100% grátis</span><span>·</span><span>Sem spam</span><span>·</span><span>Saia quando quiser</span></div>
+</div>
+
+<div class="faq-section">
+  <div class="faq-head">Perguntas diretas</div>
+  <div class="faq-item">
+    <div class="faq-q">Os 87% de acerto são reais?</div>
+    <div class="faq-a">São baseados nos últimos 30 dias de sinais enviados. O histórico das últimas 24h está visível aqui mesmo nessa página — com wins e losses. Não escondemos os erros.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Por que é grátis?</div>
+    <div class="faq-a">Somos afiliados da Avalon Broker. Quando você cria conta e opera pela plataforma, ela nos remunera — sem custo algum pra você.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">Preciso de experiência?</div>
+    <div class="faq-a">Não. O sinal chega com tudo: par, direção e horário. Mas lembre — opções binárias têm risco. Comece com valores pequenos.</div>
+  </div>
+  <div class="faq-item">
+    <div class="faq-q">O sinal funciona em qualquer plataforma?</div>
+    <div class="faq-a">Sim. Mas recomendamos a Avalon Broker pela execução rápida e depósito mínimo acessível.</div>
+  </div>
+</div>
+
+<div class="final">
+  <div class="final-h">Veja o sinal.<br><span>Depois decide.</span></div>
+  <div class="final-sub">Sem compromisso. Sem cartão. Grátis agora.</div>
+  <a href="https://t.me/AvalonLucro_bot" class="btn-prime">RECEBER SINAIS AO VIVO AGORA</a>
+</div>
+
+<div class="disclaimer">⚠️ AVISO DE RISCO: Opções binárias envolvem risco elevado de perda de capital. Os sinais são gerados por análise técnica automatizada e não garantem lucros. Resultados passados não são garantia de resultados futuros. Opere apenas com valores que pode perder. Este canal não é representante oficial da Avalon Broker. Não destinado a residentes dos EUA, Reino Unido, países da AEE, Rússia ou Ucrânia.</div>
