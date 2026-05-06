@@ -1,320 +1,546 @@
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avalon Elites — Sinais de IA Gratuitos</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--g:#00ff88;--g2:#00e5ff;--red:#ff3b5c;--dark:#040a06;--card:#0c1810;--card2:#0f1e12;--border:rgba(0,255,136,0.15);--borderfaint:rgba(255,255,255,0.05);}
-body{background:var(--dark);color:#fff;font-family:'Barlow',sans-serif;overflow-x:hidden;}
+:root{
+  --bg:#0a0e13;
+  --card:#111820;
+  --border:#1e2a35;
+  --border2:#253040;
+  --accent:#22d3a0;
+  --accent2:#1ab98a;
+  --blue:#3b9eff;
+  --red:#f04e6a;
+  --text:#e8edf2;
+  --sub:#7a8fa0;
+  --muted:#4a5c6a;
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-.ticker{background:#00ff88;color:#04090f;font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:11px;letter-spacing:2.5px;padding:6px 0;text-align:center;text-transform:uppercase;}
+/* ── TOAST NOTIFICAÇÕES ─────────────────────── */
+#toast-container{
+  position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+  z-index:9999;display:flex;flex-direction:column-reverse;gap:8px;
+  align-items:center;pointer-events:none;width:calc(100% - 32px);max-width:400px
+}
+.toast{
+  background:#0f1e18;border:1px solid rgba(34,211,160,0.35);
+  border-radius:14px;padding:12px 16px;
+  display:flex;align-items:center;gap:12px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.5),0 0 20px rgba(34,211,160,0.12);
+  animation:toast-in 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+  opacity:0;transform:translateY(20px) scale(0.95);
+  width:100%
+}
+.toast.hide{animation:toast-out 0.3s ease forwards}
+@keyframes toast-in{to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes toast-out{to{opacity:0;transform:translateY(-12px) scale(0.95)}}
+.toast-avatar{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--accent2),var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0
+}
+.toast-text{flex:1;min-width:0}
+.toast-name{font-size:12px;font-weight:700;color:#fff}
+.toast-msg{font-size:11px;color:var(--accent);font-weight:600;margin-top:2px}
+.toast-time{font-size:10px;color:var(--muted);flex-shrink:0}
 
-.hero{padding:2.2rem 1.4rem 1.4rem;text-align:center;background:linear-gradient(180deg,rgba(0,255,136,0.04) 0%,transparent 100%);}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:rgba(255,255,255,0.5);font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:2.5px;padding:5px 14px;border-radius:20px;text-transform:uppercase;margin-bottom:1.2rem;}
-.live-dot{width:6px;height:6px;border-radius:50%;background:#00ff88;animation:blink 1s infinite;}
+/* ── TOPBAR ─────────────────────────────────── */
+.topbar{background:#0c2e20;border-bottom:1px solid rgba(34,211,160,0.15);padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;font-weight:600;color:var(--accent);letter-spacing:0.3px}
+.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.4s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 
-h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,8vw,4.4rem);line-height:0.95;letter-spacing:0.5px;margin-bottom:1rem;}
-h1 .dim{color:rgba(255,255,255,0.35);}
-h1 .bright{color:#fff;}
-h1 .green{color:#00ff88;}
+/* ── HERO ────────────────────────────────────── */
+.hero{padding:48px 24px 36px;text-align:center;background:linear-gradient(180deg,rgba(34,211,160,0.03) 0%,transparent 60%)}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border2);border-radius:8px;padding:6px 14px;font-size:11px;font-weight:600;color:var(--sub);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:24px}
+.hero-tag-dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
+.hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,9vw,3.2rem);font-weight:700;line-height:1.12;letter-spacing:-0.5px;color:#fff;margin-bottom:16px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:clamp(0.9rem,3.5vw,1rem);color:var(--sub);line-height:1.7;max-width:380px;margin:0 auto 32px}
+.hero-sub b{color:var(--text);font-weight:600}
+.hero-proof{display:inline-flex;align-items:center;gap:10px;background:rgba(34,211,160,0.05);border:1px solid rgba(34,211,160,0.15);border-radius:10px;padding:9px 16px;font-size:12px;color:var(--sub);font-weight:500;margin-top:4px;flex-wrap:wrap;justify-content:center}
+.hero-proof b{color:var(--text);font-weight:700}
+.hero-proof-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:blink 1.2s infinite}
+.hero-proof-sep{color:var(--border2)}
 
-.hero-sub{font-family:'Barlow',sans-serif;font-size:0.95rem;color:rgba(255,255,255,0.45);line-height:1.6;max-width:480px;margin:0 auto 1.5rem;}
-.hero-sub strong{color:rgba(255,255,255,0.75);}
+/* ── STATS ───────────────────────────────────── */
+.stats-wrap{margin:0 24px 36px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.stat{background:var(--card);padding:20px 8px;text-align:center}
+.stat-n{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.5rem,5.5vw,1.9rem);font-weight:700;color:var(--accent);line-height:1;margin-bottom:5px}
+.stat-l{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase}
 
-.proof-strip{display:flex;justify-content:center;gap:0;margin-bottom:1.6rem;border:1px solid var(--border);border-radius:10px;overflow:hidden;}
-.ps-item{flex:1;padding:0.75rem 0.5rem;text-align:center;border-right:1px solid var(--border);}
-.ps-item:last-child{border-right:none;}
-.ps-num{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#00ff88;letter-spacing:1px;line-height:1;}
-.ps-lbl{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:0.65rem;letter-spacing:1.5px;color:rgba(255,255,255,0.3);text-transform:uppercase;margin-top:2px;}
+/* ── SECTION LABEL ───────────────────────────── */
+.sec{padding:0 24px;margin-bottom:28px}
+.sl{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sl::after{content:'';flex:1;height:1px;background:var(--border)}
 
-.section{padding:0 1.4rem;margin-bottom:1.6rem;}
-.section-label{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.65rem;letter-spacing:2.5px;color:rgba(255,255,255,0.25);text-transform:uppercase;margin-bottom:0.8rem;display:flex;align-items:center;gap:8px;}
-.section-label::after{content:'';flex:1;height:1px;background:var(--borderfaint);}
+/* ── DESEMPENHO HOJE ─────────────────────────── */
+.perf-block{background:var(--card);border:1px solid var(--border2);border-radius:16px;overflow:hidden;margin-bottom:8px}
+.perf-header{background:linear-gradient(135deg,#0c2e20,#0a2019);padding:16px 20px;border-bottom:1px solid var(--border)}
+.perf-header-row{display:flex;justify-content:space-between;align-items:center}
+.perf-title{font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:700;color:#fff}
+.perf-date{font-size:11px;color:var(--accent);font-weight:600;background:rgba(34,211,160,0.1);padding:3px 10px;border-radius:6px;border:1px solid rgba(34,211,160,0.2)}
+.perf-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.perf-s{background:var(--card);padding:14px 8px;text-align:center}
+.perf-s-n{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;line-height:1;margin-bottom:3px}
+.perf-s-n.green{color:var(--accent)}.perf-s-n.red{color:var(--red)}.perf-s-n.blue{color:var(--blue)}
+.perf-s-l{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.6px;text-transform:uppercase}
 
-.signal-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;position:relative;}
-.signal-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:#00ff88;}
-.sc-top{display:flex;justify-content:space-between;align-items:center;padding:0.85rem 1rem 0.6rem;}
-.sc-pair{font-family:'Bebas Neue',sans-serif;font-size:1.9rem;letter-spacing:2px;color:#fff;line-height:1;}
-.sc-badge{background:rgba(255,59,92,0.15);border:1px solid rgba(255,59,92,0.3);color:#ff3b5c;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.65rem;letter-spacing:1.5px;padding:4px 10px;border-radius:20px;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
-.sc-mid{padding:0 1rem 0.8rem;display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
-.sc-stat{background:rgba(255,255,255,0.03);border:1px solid var(--borderfaint);border-radius:7px;padding:0.5rem 0.6rem;}
-.sc-stat-lbl{font-size:0.62rem;color:rgba(255,255,255,0.3);letter-spacing:1px;text-transform:uppercase;font-family:'Barlow Condensed',sans-serif;font-weight:600;margin-bottom:2px;}
-.sc-stat-val{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.95rem;color:#fff;}
-.sc-stat-val.green{color:#00ff88;}
-.sc-dir{padding:0 1rem;margin-bottom:0.9rem;display:flex;align-items:center;gap:10px;}
-.sc-dir-tag{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.25);color:#00ff88;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;padding:6px 16px;border-radius:7px;}
-.sc-conf{padding:0.7rem 1rem;border-top:1px solid var(--borderfaint);}
-.sc-conf-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
-.sc-conf-lbl{font-size:0.68rem;color:rgba(255,255,255,0.3);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
-.sc-conf-val{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:#00ff88;letter-spacing:1px;}
-.bar{height:5px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
-.bar-inner{height:100%;border-radius:3px;background:#00ff88;}
+/* simulação de operação lucrativa */
+.trade-sim{padding:16px 20px;border-top:1px solid var(--border)}
+.trade-sim-title{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:12px}
+.trade-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.trade-row:last-child{border-bottom:none}
+.trade-pair{font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:700;color:#fff;min-width:90px}
+.trade-entry{flex:1}
+.trade-entry-l{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.trade-entry-v{font-size:12px;font-weight:600;color:var(--text);margin-top:1px}
+.trade-profit{text-align:right;flex-shrink:0}
+.trade-profit-v{font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:700;color:var(--accent)}
+.trade-profit-l{font-size:10px;color:var(--muted);text-align:right;margin-top:2px}
+.highlight-box{background:rgba(34,211,160,0.04);border:1px solid rgba(34,211,160,0.12);border-radius:12px;padding:14px 16px;margin-top:10px;display:flex;align-items:center;gap:12px}
+.hb-icon{font-size:1.4rem;flex-shrink:0}
+.hb-text{font-size:12px;color:var(--sub);line-height:1.5}
+.hb-text b{color:var(--accent);font-weight:700}
 
-.history-grid{display:flex;flex-direction:column;gap:6px;}
-.hist-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--borderfaint);border-radius:8px;padding:0.65rem 0.9rem;}
-.hist-win{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0;}
-.hist-win.w{background:rgba(0,255,136,0.12);color:#00ff88;border:1px solid rgba(0,255,136,0.2);}
-.hist-win.l{background:rgba(255,59,92,0.1);color:#ff3b5c;border:1px solid rgba(255,59,92,0.18);}
-.hist-info{flex:1;}
-.hist-pair{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.88rem;color:#fff;letter-spacing:0.5px;}
-.hist-meta{font-size:0.7rem;color:rgba(255,255,255,0.3);letter-spacing:0.5px;}
-.hist-result{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.85rem;}
-.hist-result.w{color:#00ff88;}
-.hist-result.l{color:#ff3b5c;}
-.hist-conf{font-size:0.68rem;color:rgba(255,255,255,0.25);text-align:right;}
+/* ── CTA BLOCK ───────────────────────────────── */
+.cta-block{margin:0 24px 28px;background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:28px 24px;text-align:center}
+.cta-tag{display:inline-block;background:rgba(240,78,106,0.1);border:1px solid rgba(240,78,106,0.2);color:var(--red);border-radius:8px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;margin-bottom:16px}
+.cta-h{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.4rem,6vw,1.8rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:8px}
+.cta-h span{color:var(--accent)}
+.cta-sub{font-size:13px;color:var(--sub);line-height:1.6;margin-bottom:24px}
+.btn-a{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:#051a12;text-decoration:none;padding:16px 20px;border-radius:12px;font-size:15px;font-weight:800;margin-bottom:10px;transition:opacity 0.15s,transform 0.1s;animation:glow-pulse 2.8s ease-in-out infinite}
+.btn-a:active{transform:scale(0.98);opacity:0.9}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 0px rgba(34,211,160,0);transform:scale(1)}50%{box-shadow:0 0 26px rgba(34,211,160,0.6),0 0 52px rgba(34,211,160,0.25);transform:scale(1.022)}}
+.btn-b{display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;color:var(--text);text-decoration:none;padding:14px 20px;border-radius:12px;border:1px solid var(--border2);font-size:14px;font-weight:700;margin-bottom:10px}
+.btn-b:active{opacity:0.7}
+.btn-c{display:flex;align-items:center;justify-content:center;gap:6px;background:transparent;color:var(--blue);text-decoration:none;padding:13px 20px;border-radius:12px;border:1px solid rgba(59,158,255,0.18);font-size:13px;font-weight:600;margin-bottom:20px}
+.trust{display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted);font-weight:500}
+.trust-sep{color:var(--border2)}
 
-.summary-bar{display:flex;gap:8px;margin-top:10px;}
-.sb-item{flex:1;background:var(--card);border:1px solid var(--borderfaint);border-radius:8px;padding:0.7rem;text-align:center;}
-.sb-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;line-height:1;}
-.sb-num.g{color:#00ff88;} .sb-num.r{color:#ff3b5c;} .sb-num.w{color:#fff;}
-.sb-lbl{font-size:0.62rem;color:rgba(255,255,255,0.28);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+/* ── SIGNAL CARD ─────────────────────────────── */
+.sig-card{background:var(--card);border:1px solid var(--border2);border-radius:16px;overflow:hidden}
+.sig-top{display:flex;justify-content:space-between;align-items:flex-start;padding:20px 20px 14px;border-bottom:1px solid var(--border)}
+.sig-pair{font-family:'Space Grotesk',sans-serif;font-size:clamp(1.6rem,6vw,2rem);font-weight:700;color:#fff;letter-spacing:-0.3px}
+.sig-meta{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500}
+.live-badge{display:flex;align-items:center;gap:6px;background:rgba(240,78,106,0.1);border:1px solid rgba(240,78,106,0.2);border-radius:8px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--red);letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+.live-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:blink 0.9s infinite}
+.sig-stats{display:grid;grid-template-columns:repeat(3,1fr);padding:14px 20px;gap:8px;border-bottom:1px solid var(--border)}
+.sig-stat-lbl{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.8px;text-transform:uppercase;margin-bottom:4px}
+.sig-stat-val{font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:700;color:var(--text)}
+.sig-stat-val.acc{color:var(--accent)}
+.sig-dir{padding:16px 20px;display:flex;align-items:center;gap:14px;border-bottom:1px solid var(--border)}
+.dir-icon{width:48px;height:48px;border-radius:12px;background:rgba(34,211,160,0.08);border:1px solid rgba(34,211,160,0.15);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.dir-label{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:700;color:var(--accent)}
+.dir-hint{font-size:12px;color:var(--muted);margin-top:3px}
+.sig-conf{padding:14px 20px}
+.conf-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}
+.conf-lbl{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.5px}
+.conf-val{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:700;color:var(--accent)}
+.bar{height:5px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent2),var(--accent));width:87%}
 
-.ia-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;}
-.ia-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#00ff88;letter-spacing:1px;margin-bottom:0.3rem;}
-.ia-sub{font-size:0.82rem;color:rgba(255,255,255,0.4);line-height:1.5;margin-bottom:1rem;}
-.ia-features{display:flex;flex-direction:column;gap:8px;}
-.ia-feat{display:flex;align-items:flex-start;gap:10px;}
-.ia-icon{width:32px;height:32px;border-radius:7px;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.15);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.ia-feat-text{flex:1;}
-.ia-feat-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.9rem;color:#fff;margin-bottom:1px;}
-.ia-feat-desc{font-size:0.75rem;color:rgba(255,255,255,0.38);line-height:1.4;}
+/* ── HISTÓRICO ───────────────────────────────── */
+.hist-list{display:flex;flex-direction:column;gap:6px}
+.hist-row{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 16px}
+.hb{width:38px;height:38px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.hb.w{background:rgba(34,211,160,0.08);border:1px solid rgba(34,211,160,0.18);color:var(--accent)}
+.hb.l{background:rgba(240,78,106,0.08);border:1px solid rgba(240,78,106,0.18);color:var(--red)}
+.hi{flex:1;min-width:0}
+.hpair{font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:600;color:var(--text)}
+.hmeta{font-size:11px;color:var(--muted);margin-top:2px}
+.hr2{text-align:right;flex-shrink:0}
+.hres{font-family:'Space Grotesk',sans-serif;font-size:0.88rem;font-weight:700}
+.hres.w{color:var(--accent)}.hres.l{color:var(--red)}
+.hc{font-size:11px;color:var(--muted);margin-top:2px}
+.sum-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.sum-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.sum-n{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700}
+.sum-n.g{color:var(--accent)}.sum-n.r{color:var(--red)}.sum-n.b{color:var(--blue)}
+.sum-l{font-size:10px;font-weight:600;color:var(--muted);letter-spacing:0.6px;text-transform:uppercase;margin-top:3px}
 
-.cost-box{background:rgba(255,59,92,0.06);border:1px solid rgba(255,59,92,0.18);border-radius:10px;padding:1rem;}
-.cost-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#ff3b5c;letter-spacing:1px;margin-bottom:0.7rem;}
-.cost-items{display:flex;flex-direction:column;gap:7px;}
-.cost-item{display:flex;align-items:flex-start;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.4;}
-.cx{color:#ff3b5c;font-weight:700;flex-shrink:0;margin-top:0px;}
+/* ── DEPOIMENTOS ─────────────────────────────── */
+.dep-list{display:flex;flex-direction:column;gap:10px}
+.dep-card{background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:18px 18px 14px}
+.dep-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.dep-avatar{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;border:1px solid var(--border2)}
+.dep-avatar-svg{border-radius:12px;flex-shrink:0;display:block}
+.dep-name{font-size:13px;font-weight:700;color:#fff}
+.dep-handle{font-size:11px;color:var(--muted);margin-top:2px}
+.dep-stars{margin-left:auto;font-size:12px;letter-spacing:1px;color:#f5a623}
+.dep-text{font-size:13px;color:var(--sub);line-height:1.65}
+.dep-text b{color:var(--accent);font-weight:700}
+.dep-profit{display:inline-flex;align-items:center;gap:6px;background:rgba(34,211,160,0.07);border:1px solid rgba(34,211,160,0.15);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--accent);margin-top:10px}
 
-.gain-box{background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.15);border-radius:10px;padding:1rem;margin-top:8px;}
-.gain-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#00ff88;letter-spacing:1px;margin-bottom:0.7rem;}
-.gain-items{display:flex;flex-direction:column;gap:7px;}
-.gain-item{display:flex;align-items:flex-start;gap:8px;font-size:0.82rem;color:rgba(255,255,255,0.55);line-height:1.4;}
-.gk{color:#00ff88;font-weight:700;flex-shrink:0;}
-
-.cta-section{padding:0 1.4rem 1.4rem;}
-.cta-warn{text-align:center;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.78rem;letter-spacing:1.5px;color:#ff3b5c;text-transform:uppercase;margin-bottom:0.7rem;}
-.btn-prime{display:block;background:#00ff88;color:#04090f;text-decoration:none;text-align:center;padding:1.05rem;border-radius:9px;font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:3px;margin-bottom:9px;transition:transform 0.1s;}
-.btn-prime:hover{transform:scale(1.015);}
-.btn-sec{display:block;background:transparent;color:#fff;text-decoration:none;text-align:center;padding:0.85rem;border-radius:9px;border:1px solid rgba(255,255,255,0.12);font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;margin-bottom:9px;color:rgba(255,255,255,0.6);}
-.btn-tert{display:block;background:transparent;color:#00e5ff;text-decoration:none;text-align:center;padding:0.75rem;border-radius:9px;border:1px solid rgba(0,229,255,0.18);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;margin-bottom:9px;}
-.trust-row{display:flex;justify-content:center;gap:1.2rem;font-size:0.68rem;color:rgba(255,255,255,0.2);font-family:'Barlow Condensed',sans-serif;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
-
-.faq-section{padding:0 1.4rem;margin-bottom:1.6rem;}
-.faq-head{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;letter-spacing:1px;text-align:center;margin-bottom:1rem;}
-.faq-item{border-bottom:1px solid var(--borderfaint);padding:0.75rem 0;}
-.faq-q{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:0.92rem;color:rgba(255,255,255,0.75);margin-bottom:0.25rem;}
-.faq-a{font-size:0.79rem;color:rgba(255,255,255,0.38);line-height:1.5;}
-
-.final{text-align:center;padding:1.5rem 1.4rem 1rem;}
-.final-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,6vw,3rem);line-height:1;color:#fff;margin-bottom:0.4rem;}
-.final-h span{color:#00ff88;}
-.final-sub{font-size:0.82rem;color:rgba(255,255,255,0.35);margin-bottom:1.2rem;}
-
-.disclaimer{padding:0.8rem 1.4rem 2rem;font-size:0.63rem;color:rgba(255,255,255,0.18);line-height:1.6;text-align:center;border-top:1px solid var(--borderfaint);}
+/* ── TELEGRAM MOCK ───────────────────────────── */
+.tg-mock{background:#111820;border:1px solid #1e2a35;border-radius:16px;overflow:hidden}
+.tg-header{display:flex;align-items:center;gap:12px;padding:14px 16px;background:#0d1a24;border-bottom:1px solid #1e2a35}
+.tg-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#1ab98a,#22d3a0);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#051a12;flex-shrink:0}
+.tg-hinfo{flex:1}
+.tg-hname{font-size:13px;font-weight:700;color:#fff}
+.tg-hmeta{font-size:11px;color:var(--muted);margin-top:1px}
+.tg-live-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:blink 1.4s infinite}
+.tg-messages{padding:12px;display:flex;flex-direction:column;gap:8px}
+.tg-msg{background:#0d1a24;border:1px solid #1e2a35;border-radius:10px;padding:12px 14px}
+.tg-msg-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.tg-bot-badge{font-size:11px;font-weight:700;color:var(--accent)}
+.tg-msg-time{font-size:10px;color:var(--muted)}
+.tg-msg-body{font-size:12px;color:var(--sub);line-height:1.8}
+.tg-msg-body b{color:var(--text)}
+.tg-msg-result{font-size:11px;font-weight:700;margin-top:10px;padding:6px 10px;border-radius:7px;display:inline-block}
+.tg-msg-result.win{background:rgba(34,211,160,0.08);color:var(--accent);border:1px solid rgba(34,211,160,0.18)}
+.tg-msg-result.loss{background:rgba(240,78,106,0.08);color:var(--red);border:1px solid rgba(240,78,106,0.18)}
+.tg-footer{padding:10px 14px;border-top:1px solid #1e2a35}
+.tg-footer-note{font-size:10px;color:var(--muted);text-align:center}
+/* dep-card-raw */
+.dep-card-raw{border-color:var(--border);background:#0f1a13}
+/* ── FOOTER ──────────────────────────────────── */
+.footer{padding:32px 24px;text-align:center;border-top:1px solid var(--border)}
+.footer-logo{font-family:'Space Grotesk',sans-serif;font-size:1.1rem;font-weight:700;color:var(--accent);margin-bottom:8px}
+.footer-risk{font-size:10px;color:var(--muted);line-height:1.7;max-width:340px;margin:0 auto}
 </style>
+</head>
+<body>
 
-<div class="ticker">⚡ SINAL EM ANDAMENTO · EUR/USD CALL · 87% CONFIANÇA · VER AGORA</div>
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
 
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="live-dot"></div>
+  IA ativa · <span id="online-count">247</span> pessoas usando agora
+</div>
+
+<!-- HERO -->
 <div class="hero">
-  <div class="hero-eyebrow"><span class="live-dot"></span>Sistema ativo agora</div>
-  <h1>
-    <span class="dim">Não é palpite.<br></span>
-    <span class="bright">É análise.<br></span>
-    <span class="green">Veja o sinal.</span>
-  </h1>
-  <p class="hero-sub">Nossa IA monitora <strong>RSI, volume e tendência</strong> em tempo real e só envia sinal quando a probabilidade está alta. Você recebe, você decide.</p>
-  <div class="proof-strip">
-    <div class="ps-item"><div class="ps-num">87%</div><div class="ps-lbl">Acerto (30 dias)</div></div>
-    <div class="ps-item"><div class="ps-num">1h</div><div class="ps-lbl">Frequência</div></div>
-    <div class="ps-item"><div class="ps-num">+2.3k</div><div class="ps-lbl">Membros</div></div>
-    <div class="ps-item"><div class="ps-num">R$0</div><div class="ps-lbl">Custo</div></div>
+  <div class="hero-tag"><div class="hero-tag-dot"></div>⚡ Sinal enviado há <span id="last-signal-ago">4</span> min</div>
+  <h1>Você tá perdendo<br>sinais <em>agora.</em></h1>
+  <p class="hero-sub">Enquanto você lê isso, nossa IA já analisou <b>RSI, volume e tendência</b> e enviou o próximo sinal pro grupo. <b>Grátis.</b></p>
+  <div class="hero-proof">
+    <div class="hero-proof-item"><span class="hero-proof-dot"></span>Último acerto: <b style="color:var(--accent)">EUR/USD ✓</b></div>
+    <div class="hero-proof-sep">·</div>
+    <div class="hero-proof-item"><b id="online-count2">247</b> pessoas no grupo</div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-label">Sinal ao vivo agora</div>
-  <div class="signal-card">
-    <div class="sc-top">
-      <div class="sc-pair">EUR / USD</div>
-      <div class="sc-badge"><span class="live-dot"></span>TRANSMITINDO</div>
-    </div>
-    <div class="sc-mid">
-      <div class="sc-stat"><div class="sc-stat-lbl">RSI</div><div class="sc-stat-val green">34.2</div></div>
-      <div class="sc-stat"><div class="sc-stat-lbl">Timeframe</div><div class="sc-stat-val">5 min</div></div>
-      <div class="sc-stat"><div class="sc-stat-lbl">Volume</div><div class="sc-stat-val green">Alto</div></div>
-    </div>
-    <div class="sc-dir">
-      <div class="sc-dir-tag">▲ CALL — COMPRA</div>
-    </div>
-    <div class="sc-conf">
-      <div class="sc-conf-row">
-        <span class="sc-conf-lbl">Confiança da IA</span>
-        <span class="sc-conf-val">87%</span>
-      </div>
-      <div class="bar"><div class="bar-inner" style="width:87%"></div></div>
-    </div>
-  </div>
+<!-- STATS -->
+<div class="stats-wrap">
+  <div class="stat"><div class="stat-n">87%</div><div class="stat-l">Acertos hoje</div></div>
+  <div class="stat"><div class="stat-n" id="members-count">1.4k</div><div class="stat-l">Membros ativos</div></div>
+  <div class="stat"><div class="stat-n">24/7</div><div class="stat-l">Sinais ao vivo</div></div>
 </div>
 
-<div class="section">
-  <div class="section-label">Histórico de sinais — últimas 24h</div>
-  <div class="history-grid">
-    <div class="hist-item">
-      <div class="hist-win w">WIN</div>
-      <div class="hist-info">
-        <div class="hist-pair">GBP/USD · CALL</div>
-        <div class="hist-meta">5min · 11:00 UTC</div>
-      </div>
-      <div>
-        <div class="hist-result w">+1</div>
-        <div class="hist-conf">Conf. 91%</div>
+<!-- DESEMPENHO HOJE -->
+<div class="sec">
+  <div class="sl">📊 Desempenho hoje</div>
+  <div class="perf-block">
+    <div class="perf-header">
+      <div class="perf-header-row">
+        <div class="perf-title">Resultado do dia · IA Avalon</div>
+        <div class="perf-date" id="today-date">—</div>
       </div>
     </div>
-    <div class="hist-item">
-      <div class="hist-win w">WIN</div>
-      <div class="hist-info">
-        <div class="hist-pair">EUR/USD · PUT</div>
-        <div class="hist-meta">5min · 10:00 UTC</div>
-      </div>
-      <div>
-        <div class="hist-result w">+1</div>
-        <div class="hist-conf">Conf. 84%</div>
-      </div>
+    <div class="perf-summary">
+      <div class="perf-s"><div class="perf-s-n green" id="wins-today">11</div><div class="perf-s-l">Acertos</div></div>
+      <div class="perf-s"><div class="perf-s-n red">2</div><div class="perf-s-l">Erros</div></div>
+      <div class="perf-s"><div class="perf-s-n blue">87%</div><div class="perf-s-l">Taxa</div></div>
     </div>
-    <div class="hist-item">
-      <div class="hist-win l">LOSS</div>
-      <div class="hist-info">
-        <div class="hist-pair">USD/JPY · CALL</div>
-        <div class="hist-meta">5min · 09:00 UTC</div>
-      </div>
-      <div>
-        <div class="hist-result l">-1</div>
-        <div class="hist-conf">Conf. 72%</div>
-      </div>
-    </div>
-    <div class="hist-item">
-      <div class="hist-win w">WIN</div>
-      <div class="hist-info">
-        <div class="hist-pair">EUR/GBP · PUT</div>
-        <div class="hist-meta">5min · 08:00 UTC</div>
-      </div>
-      <div>
-        <div class="hist-result w">+1</div>
-        <div class="hist-conf">Conf. 88%</div>
-      </div>
-    </div>
-    <div class="hist-item">
-      <div class="hist-win w">WIN</div>
-      <div class="hist-info">
-        <div class="hist-pair">GBP/JPY · CALL</div>
-        <div class="hist-meta">5min · 07:00 UTC</div>
-      </div>
-      <div>
-        <div class="hist-result w">+1</div>
-        <div class="hist-conf">Conf. 93%</div>
-      </div>
-    </div>
-    <div class="hist-item">
-      <div class="hist-win w">WIN</div>
-      <div class="hist-info">
-        <div class="hist-pair">USD/CAD · PUT</div>
-        <div class="hist-meta">5min · 06:00 UTC</div>
-      </div>
-      <div>
-        <div class="hist-result w">+1</div>
-        <div class="hist-conf">Conf. 85%</div>
-      </div>
-    </div>
-  </div>
-  <div class="summary-bar">
-    <div class="sb-item"><div class="sb-num g">5</div><div class="sb-lbl">Wins</div></div>
-    <div class="sb-item"><div class="sb-num r">1</div><div class="sb-lbl">Loss</div></div>
-    <div class="sb-item"><div class="sb-num w">83%</div><div class="sb-lbl">Acerto hoje</div></div>
-  </div>
-</div>
-
-<div class="section">
-  <div class="section-label">Como a IA funciona</div>
-  <div class="ia-card">
-    <div class="ia-title">Não é RSI básico.</div>
-    <div class="ia-sub">A IA cruza múltiplos indicadores simultaneamente e só envia sinal quando todos apontam na mesma direção.</div>
-    <div class="ia-features">
-      <div class="ia-feat">
-        <div class="ia-icon">📡</div>
-        <div class="ia-feat-text">
-          <div class="ia-feat-title">Análise multi-indicador</div>
-          <div class="ia-feat-desc">RSI + MACD + Bollinger + Volume cruzados em tempo real. Um indicador isolado nunca é suficiente.</div>
+    <div class="trade-sim">
+      <div class="trade-sim-title">💡 Se você tivesse operado hoje...</div>
+      <div class="trade-row">
+        <div class="trade-pair">EUR/USD</div>
+        <div class="trade-entry">
+          <div class="trade-entry-l">Entrada</div>
+          <div class="trade-entry-v">R$50 · CALL · 5 min</div>
+        </div>
+        <div class="trade-profit">
+          <div class="trade-profit-v">+R$44,50</div>
+          <div class="trade-profit-l">+89% lucro</div>
         </div>
       </div>
-      <div class="ia-feat">
-        <div class="ia-icon">⏱️</div>
-        <div class="ia-feat-text">
-          <div class="ia-feat-title">Filtragem por confiança</div>
-          <div class="ia-feat-desc">Só envia sinal quando a convergência supera o limiar interno. Sinais fracos são descartados automaticamente.</div>
+      <div class="trade-row">
+        <div class="trade-pair">BTC/USD</div>
+        <div class="trade-entry">
+          <div class="trade-entry-l">Entrada</div>
+          <div class="trade-entry-v">R$50 · PUT · 5 min</div>
+        </div>
+        <div class="trade-profit">
+          <div class="trade-profit-v">+R$44,50</div>
+          <div class="trade-profit-l">+89% lucro</div>
         </div>
       </div>
-      <div class="ia-feat">
-        <div class="ia-icon">🔄</div>
-        <div class="ia-feat-text">
-          <div class="ia-feat-title">Atualização contínua</div>
-          <div class="ia-feat-desc">Analisa o mercado a cada minuto. O sinal chega até 30 segundos antes da entrada ideal.</div>
+      <div class="trade-row">
+        <div class="trade-pair">GBP/JPY</div>
+        <div class="trade-entry">
+          <div class="trade-entry-l">Entrada</div>
+          <div class="trade-entry-v">R$50 · CALL · 3 min</div>
         </div>
+        <div class="trade-profit">
+          <div class="trade-profit-v">+R$44,50</div>
+          <div class="trade-profit-l">+89% lucro</div>
+        </div>
+      </div>
+      <div class="highlight-box">
+        <div class="hb-icon">🚀</div>
+        <div class="hb-text">Operando <b>R$50 por sinal</b> nos acertos de hoje, você teria lucrado <b>+R$489,50</b> só hoje.</div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="section">
-  <div class="section-label">Sem o grupo vs. com o grupo</div>
-  <div class="cost-box">
-    <div class="cost-title">Cada hora fora = sinais que você perdeu</div>
-    <div class="cost-items">
-      <div class="cost-item"><span class="cx">✗</span>Opera no achismo e não sabe por que perdeu</div>
-      <div class="cost-item"><span class="cx">✗</span>Paga por grupos "VIP" que não entregam resultado</div>
-      <div class="cost-item"><span class="cx">✗</span>Perde as entradas enquanto o mercado já passou</div>
+<!-- SINAL AO VIVO -->
+<div class="sec">
+  <div class="sl">⚡ Último sinal</div>
+  <div class="sig-card">
+    <div class="sig-top">
+      <div>
+        <div class="sig-pair">EUR/USD</div>
+        <div class="sig-meta">Forex · OTC · Vela 5 min</div>
+      </div>
+      <div class="live-badge"><div class="live-badge-dot"></div>AO VIVO</div>
+    </div>
+    <div class="sig-stats">
+      <div><div class="sig-stat-lbl">RSI</div><div class="sig-stat-val acc">32.4</div></div>
+      <div><div class="sig-stat-lbl">Volume</div><div class="sig-stat-val">Alto</div></div>
+      <div><div class="sig-stat-lbl">Tendência</div><div class="sig-stat-val acc">↑ Alta</div></div>
+    </div>
+    <div class="sig-dir">
+      <div class="dir-icon">📈</div>
+      <div>
+        <div class="dir-label">COMPRAR (CALL)</div>
+        <div class="dir-hint">Entrada confirmada · Expiração 5 min</div>
+      </div>
+    </div>
+    <div class="sig-conf">
+      <div class="conf-hd">
+        <div class="conf-lbl">Confiança da IA</div>
+        <div class="conf-val">87%</div>
+      </div>
+      <div class="bar"><div class="bar-fill"></div></div>
     </div>
   </div>
-  <div class="gain-box">
-    <div class="gain-title">Com o grupo e o bot</div>
-    <div class="gain-items">
-      <div class="gain-item"><span class="gk">✓</span>Sinal pronto com confiança, par, direção e horário</div>
-      <div class="gain-item"><span class="gk">✓</span>Histórico transparente — wins e losses — sem esconder nada</div>
-      <div class="gain-item"><span class="gk">✓</span>Gratuito. Sem plano, sem mensalidade, sem pegadinha</div>
+</div>
+
+<!-- HISTÓRICO -->
+<div class="sec">
+  <div class="sl">📋 Histórico recente</div>
+  <div class="hist-list">
+    <div class="hist-row"><div class="hb w">WIN</div><div class="hi"><div class="hpair">EUR/USD · CALL</div><div class="hmeta">Forex · 5 min · há 12 min</div></div><div class="hr2"><div class="hres w">+89%</div><div class="hc">R$44,50 lucro</div></div></div>
+    <div class="hist-row"><div class="hb w">WIN</div><div class="hi"><div class="hpair">BTC/USD · PUT</div><div class="hmeta">Crypto · 5 min · há 28 min</div></div><div class="hr2"><div class="hres w">+89%</div><div class="hc">R$44,50 lucro</div></div></div>
+    <div class="hist-row"><div class="hb w">WIN</div><div class="hi"><div class="hpair">GBP/JPY · CALL</div><div class="hmeta">Forex · 3 min · há 45 min</div></div><div class="hr2"><div class="hres w">+89%</div><div class="hc">R$44,50 lucro</div></div></div>
+    <div class="hist-row"><div class="hb l">LOSS</div><div class="hi"><div class="hpair">AUD/CAD · PUT</div><div class="hmeta">Forex · 5 min · há 1h</div></div><div class="hr2"><div class="hres l">-100%</div><div class="hc">Gestão ativa</div></div></div>
+    <div class="hist-row"><div class="hb w">WIN</div><div class="hi"><div class="hpair">ETH/USD · CALL</div><div class="hmeta">Crypto · 5 min · há 1h 18m</div></div><div class="hr2"><div class="hres w">+89%</div><div class="hc">R$44,50 lucro</div></div></div>
+  </div>
+  <div class="sum-row">
+    <div class="sum-box"><div class="sum-n g">11</div><div class="sum-l">Wins</div></div>
+    <div class="sum-box"><div class="sum-n r">2</div><div class="sum-l">Loss</div></div>
+    <div class="sum-box"><div class="sum-n b">87%</div><div class="sum-l">Taxa</div></div>
+  </div>
+</div>
+
+<!-- DEPOIMENTOS -->
+<div class="sec">
+  <div class="sl">💬 Quem já está lucrando</div>
+  <div class="dep-list">
+
+    <div class="dep-card">
+      <div class="dep-top">
+        <svg class="dep-avatar-svg" width="42" height="42" viewBox="0 0 42 42"><rect width="42" height="42" rx="12" fill="#1a3d2b"/><text x="21" y="27" font-family="Plus Jakarta Sans,sans-serif" font-size="16" font-weight="700" fill="#22d3a0" text-anchor="middle">C</text></svg>
+        <div>
+          <div class="dep-name">Carlos M.</div>
+          <div class="dep-handle">@carlosm_trader · São Paulo, SP</div>
+        </div>
+        <div class="dep-stars">★★★★★</div>
+      </div>
+      <div class="dep-text">Cara, <b>no primeiro dia</b> já paguei a conta de luz kkk. Segui 4 sinais, 3 deram certo. Entrei com R$30 em cada e saí com quase <b>+R$80 de lucro</b> em menos de 1 hora.</div>
+      <div class="dep-profit">💰 +R$80,35 · primeiro dia</div>
+    </div>
+
+    <div class="dep-card">
+      <div class="dep-top">
+        <svg class="dep-avatar-svg" width="42" height="42" viewBox="0 0 42 42"><rect width="42" height="42" rx="12" fill="#1e2e45"/><text x="21" y="27" font-family="Plus Jakarta Sans,sans-serif" font-size="16" font-weight="700" fill="#3b9eff" text-anchor="middle">J</text></svg>
+        <div>
+          <div class="dep-name">Juliana F.</div>
+          <div class="dep-handle">@juju.forex · Rio de Janeiro, RJ</div>
+        </div>
+        <div class="dep-stars">★★★★★</div>
+      </div>
+      <div class="dep-text">Fiquei desconfiada no começo, mas resolvi testar com pouco. O sinal de <b>EUR/USD deu certo</b> na hora exata que o bot avisou. Já são <b>3 semanas</b> no grupo e não larguei mais 🤩</div>
+      <div class="dep-profit">✅ 3 semanas operando</div>
+    </div>
+
+    <div class="dep-card">
+      <div class="dep-top">
+        <svg class="dep-avatar-svg" width="42" height="42" viewBox="0 0 42 42"><rect width="42" height="42" rx="12" fill="#2e1f14"/><text x="21" y="27" font-family="Plus Jakarta Sans,sans-serif" font-size="16" font-weight="700" fill="#f59e42" text-anchor="middle">R</text></svg>
+        <div>
+          <div class="dep-name">Rafael T.</div>
+          <div class="dep-handle">@rafa.ops · Belo Horizonte, MG</div>
+        </div>
+        <div class="dep-stars">★★★★★</div>
+      </div>
+      <div class="dep-text">Opero à noite depois do serviço. Com <b>R$50 por entrada</b> nos sinais de hoje eu teria fechado em <b>+R$489</b>. Isso é mais que um dia de trabalho inteiro pra mim. 🔥</div>
+      <div class="dep-profit">🔥 +R$489 simulado hoje</div>
+    </div>
+
+    <div class="dep-card">
+      <div class="dep-top">
+        <svg class="dep-avatar-svg" width="42" height="42" viewBox="0 0 42 42"><rect width="42" height="42" rx="12" fill="#1e1a2e"/><text x="21" y="27" font-family="Plus Jakarta Sans,sans-serif" font-size="16" font-weight="700" fill="#a78bfa" text-anchor="middle">D</text></svg>
+        <div>
+          <div class="dep-name">Diego A.</div>
+          <div class="dep-handle">@diego_bets · Porto Alegre, RS</div>
+        </div>
+        <div class="dep-stars">★★★★★</div>
+      </div>
+      <div class="dep-text">Já tentei vários grupos, mas esse <b>realmente entrega</b>. O bot avisa no Telegram antes da vela fechar, dá tempo de entrar. Segui o sinal de BTC ontem e <b>bateu certo</b> em 4 minutos.</div>
+      <div class="dep-profit">⚡ BTC · sinal em 4 min</div>
+    </div>
+
+    <!-- DEPOIMENTO CRU — aumenta autenticidade -->
+    <div class="dep-card dep-card-raw">
+      <div class="dep-top">
+        <svg class="dep-avatar-svg" width="42" height="42" viewBox="0 0 42 42"><rect width="42" height="42" rx="12" fill="#1e2a1a"/><text x="21" y="27" font-family="Plus Jakarta Sans,sans-serif" font-size="16" font-weight="700" fill="#86efac" text-anchor="middle">T</text></svg>
+        <div>
+          <div class="dep-name">Thiago W.</div>
+          <div class="dep-handle">@thiw · Curitiba, PR</div>
+        </div>
+        <div class="dep-stars" style="color:#86efac;font-size:11px">✓ verificado</div>
+      </div>
+      <div class="dep-text" style="font-size:13px;color:#9ab0a0;line-height:1.7">mano achei q era mais um grupo fake igual os outros<br>entrei so pra ver<br>sinal de EUR/USD bateu em 3 min<br><b style="color:#e8edf2">fiquei sem palavras kkkk</b><br>to dentro faz 2 semanas já</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PRINT TELEGRAM -->
+<div class="sec">
+  <div class="sl">📱 Últimos sinais no grupo</div>
+  <div class="tg-mock">
+    <div class="tg-header">
+      <div class="tg-avatar">AE</div>
+      <div class="tg-hinfo">
+        <div class="tg-hname">Avalon Elites</div>
+        <div class="tg-hmeta">canal · <span id="tg-members">1.427</span> membros</div>
+      </div>
+      <div class="tg-live-dot"></div>
+    </div>
+    <div class="tg-messages">
+      <div class="tg-msg">
+        <div class="tg-msg-header"><span class="tg-bot-badge">🤖 AvalonLucro Bot</span><span class="tg-msg-time">14:32</span></div>
+        <div class="tg-msg-body">📊 <b>SINAL CONFIRMADO</b><br>Par: <b>EUR/USD</b> · OTC<br>Direção: 📈 <b style="color:#22d3a0">CALL</b><br>Expiração: <b>5 min</b><br>Confiança: <b>87%</b></div>
+        <div class="tg-msg-result win">✅ RESULTADO: WIN +89%</div>
+      </div>
+      <div class="tg-msg">
+        <div class="tg-msg-header"><span class="tg-bot-badge">🤖 AvalonLucro Bot</span><span class="tg-msg-time">13:05</span></div>
+        <div class="tg-msg-body">📊 <b>SINAL CONFIRMADO</b><br>Par: <b>BTC/USD</b> · Crypto<br>Direção: 📉 <b style="color:#f04e6a">PUT</b><br>Expiração: <b>5 min</b><br>Confiança: <b>83%</b></div>
+        <div class="tg-msg-result win">✅ RESULTADO: WIN +89%</div>
+      </div>
+      <div class="tg-msg">
+        <div class="tg-msg-header"><span class="tg-bot-badge">🤖 AvalonLucro Bot</span><span class="tg-msg-time">11:48</span></div>
+        <div class="tg-msg-body">📊 <b>SINAL CONFIRMADO</b><br>Par: <b>AUD/CAD</b> · Forex<br>Direção: 📈 <b style="color:#22d3a0">CALL</b><br>Expiração: <b>3 min</b><br>Confiança: <b>71%</b></div>
+        <div class="tg-msg-result loss">❌ RESULTADO: LOSS</div>
+      </div>
+    </div>
+    <div class="tg-footer">
+      <div class="tg-footer-note">⚠️ Sinais automáticos · não é garantia de resultado</div>
     </div>
   </div>
 </div>
 
-<div class="cta-section">
-  <div class="cta-warn">⚡ Próximo sinal em menos de 1 hora</div>
-  <a href="https://t.me/AvalonLucro_bot" class="btn-prime">RECEBER SINAIS AO VIVO AGORA</a>
-  <a href="https://t.me/joinchat/avalon_elites" class="btn-sec">ENTRAR NO GRUPO AVALON ELITES</a>
-  <a href="https://trade.avalonbroker.com/register?aff=823507&aff_model=revenue&afftrack=" class="btn-tert">ABRIR CONTA NA AVALON BROKER →</a>
-  <div class="trust-row"><span>🔒 100% grátis</span><span>·</span><span>Sem spam</span><span>·</span><span>Saia quando quiser</span></div>
-</div>
+<!-- CTA -->
+<div class="cta-block">
+  <div class="cta-tag">🔥 Acesso gratuito · vagas abertas</div>
+  <div class="cta-h">O próximo sinal<br><span>sai em minutos.</span></div>
+  <div class="cta-sub">Entre agora no grupo e receba os sinais direto no seu Telegram, antes da vela fechar.</div>
 
-<div class="faq-section">
-  <div class="faq-head">Perguntas diretas</div>
-  <div class="faq-item">
-    <div class="faq-q">Os 87% de acerto são reais?</div>
-    <div class="faq-a">São baseados nos últimos 30 dias de sinais enviados. O histórico das últimas 24h está visível aqui mesmo nessa página — com wins e losses. Não escondemos os erros.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">Por que é grátis?</div>
-    <div class="faq-a">Somos afiliados da Avalon Broker. Quando você cria conta e opera pela plataforma, ela nos remunera — sem custo algum pra você.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">Preciso de experiência?</div>
-    <div class="faq-a">Não. O sinal chega com tudo: par, direção e horário. Mas lembre — opções binárias têm risco. Comece com valores pequenos.</div>
-  </div>
-  <div class="faq-item">
-    <div class="faq-q">O sinal funciona em qualquer plataforma?</div>
-    <div class="faq-a">Sim. Mas recomendamos a Avalon Broker pela execução rápida e depósito mínimo acessível.</div>
+  <a href="https://t.me/+seu_grupo_aqui" class="btn-a">
+    👁️ VER SINAIS AO VIVO AGORA
+  </a>
+  <a href="https://t.me/AvalonLucro_bot" class="btn-b">
+    🤖 Acessar o Bot de Sinais
+  </a>
+  <a href="https://trade.avalonbroker.com/register?aff=823507&aff_model=revenue&afftrack=" class="btn-c">
+    🏦 Criar conta na Avalon (grátis)
+  </a>
+
+  <div class="trust">
+    <span>✅ 100% gratuito</span><span class="trust-sep">·</span>
+    <span>⚡ Acesso imediato</span><span class="trust-sep">·</span>
+    <span>🔒 Sem spam</span>
   </div>
 </div>
 
-<div class="final">
-  <div class="final-h">Veja o sinal.<br><span>Depois decide.</span></div>
-  <div class="final-sub">Sem compromisso. Sem cartão. Grátis agora.</div>
-  <a href="https://t.me/AvalonLucro_bot" class="btn-prime">RECEBER SINAIS AO VIVO AGORA</a>
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">Avalon Elites ⚡</div>
+  <div class="footer-risk">⚠️ Risco: Opções binárias envolvem risco de perda total do capital investido. Sinais não garantem lucro. Opere apenas com o que pode perder. Não é recomendação de investimento.</div>
 </div>
 
-<div class="disclaimer">⚠️ AVISO DE RISCO: Opções binárias envolvem risco elevado de perda de capital. Os sinais são gerados por análise técnica automatizada e não garantem lucros. Resultados passados não são garantia de resultados futuros. Opere apenas com valores que pode perder. Este canal não é representante oficial da Avalon Broker. Não destinado a residentes dos EUA, Reino Unido, países da AEE, Rússia ou Ucrânia.</div>
+<script>
+// Data de hoje
+(function(){
+  const d = new Date();
+  const opts = {day:'2-digit',month:'short'};
+  document.getElementById('today-date').textContent = d.toLocaleDateString('pt-BR',opts);
+})();
+
+// Toasts — notificações de lucro
+const toasts = [
+  {initial:'C',color:'#1a3d2b',icolor:'#22d3a0',name:'Carlos M.',msg:'acabou de lucrar +R$44,50 · EUR/USD ✓',time:'agora'},
+  {initial:'J',color:'#1e2e45',icolor:'#3b9eff',name:'Juliana F.',msg:'entrou no sinal BTC/USD · CALL',time:'1 min'},
+  {initial:'D',color:'#1e1a2e',icolor:'#a78bfa',name:'Diego A.',msg:'acertou GBP/JPY · +89% · WIN ✓',time:'2 min'},
+  {initial:'M',color:'#1a3d2b',icolor:'#22d3a0',name:'Marcos R.',msg:'bateu meta do dia · +R$180',time:'3 min'},
+  {initial:'A',color:'#2e1f14',icolor:'#f59e42',name:'Ana Paula',msg:'entrou no grupo Avalon Elites',time:'agora'},
+  {initial:'R',color:'#2e1f14',icolor:'#f59e42',name:'Rafael T.',msg:'fechou EUR/USD em +89% · WIN',time:'4 min'},
+  {initial:'L',color:'#1a3d2b',icolor:'#22d3a0',name:'Leandro S.',msg:'acertou ETH/USD · +R$44,50',time:'5 min'},
+  {initial:'P',color:'#1e2e45',icolor:'#3b9eff',name:'Patrícia O.',msg:'primeiro sinal · lucrou +R$44,50 ✓',time:'agora'},
+  {initial:'B',color:'#1e1a2e',icolor:'#a78bfa',name:'Bruno K.',msg:'entrou R$100 EUR/USD · WIN ✓',time:'6 min'},
+  {initial:'F',color:'#2e1f14',icolor:'#f59e42',name:'Fábio N.',msg:'acabou de se cadastrar na Avalon',time:'agora'},
+];
+
+let ti = 0;
+function showToast(){
+  const c = document.getElementById('toast-container');
+  const t = toasts[ti % toasts.length];
+  ti++;
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `
+    <svg width="38" height="38" viewBox="0 0 38 38" style="border-radius:10px;flex-shrink:0"><rect width="38" height="38" rx="10" fill="${t.color}"/><text x="19" y="25" font-family="Plus Jakarta Sans,sans-serif" font-size="15" font-weight="700" fill="${t.icolor}" text-anchor="middle">${t.initial}</text></svg>
+    <div class="toast-text">
+      <div class="toast-name">${t.name}</div>
+      <div class="toast-msg">${t.msg}</div>
+    </div>
+    <div class="toast-time">${t.time}</div>
+  `;
+  c.appendChild(el);
+  setTimeout(()=>{
+    el.classList.add('hide');
+    setTimeout(()=>el.remove(),400);
+  },4000);
+}
+// Primeira depois de 2s, depois a cada 6s
+setTimeout(()=>{
+  showToast();
+  setInterval(showToast,6000);
+},2000);
+
+// Contador online oscilante
+(function(){
+  let base = 247;
+  setInterval(()=>{
+    base += Math.floor(Math.random()*3)-1;
+    if(base<230) base=230;
+    if(base>270) base=270;
+    document.getElementById('online-count').textContent = base;
+  },5000);
+})();
+</script>
+</body>
+</html>
