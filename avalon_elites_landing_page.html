@@ -1,0 +1,299 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avalon Elites — Sinais Gratuitos</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --neon:#00ff88;
+  --neon2:#00e5ff;
+  --dark:#060d0a;
+  --dark2:#0b1a12;
+  --card:#0f2018;
+  --border:rgba(0,255,136,0.2);
+  --glow:0 0 18px rgba(0,255,136,0.35);
+}
+body{
+  background:var(--dark);
+  color:#fff;
+  font-family:'Rajdhani',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+.bg-grid{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background-image:
+    linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+  z-index:0;
+}
+.wrapper{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:2rem 1.5rem 4rem;}
+
+/* HEADER */
+.badge{
+  display:inline-block;
+  background:rgba(0,255,136,0.1);
+  border:1px solid var(--border);
+  color:var(--neon);
+  font-size:11px;
+  letter-spacing:2px;
+  padding:4px 14px;
+  border-radius:20px;
+  text-transform:uppercase;
+  margin-bottom:1.2rem;
+}
+.logo-line{
+  display:flex;align-items:center;gap:10px;margin-bottom:0.4rem;
+}
+.logo-dot{
+  width:12px;height:12px;border-radius:50%;
+  background:var(--neon);
+  box-shadow:0 0 10px var(--neon), 0 0 20px var(--neon);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.85)}}
+h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.2rem,7vw,3.8rem);
+  line-height:1;
+  letter-spacing:1px;
+  color:#fff;
+}
+h1 span{color:var(--neon);}
+.subtitle{
+  font-size:1.05rem;
+  color:rgba(255,255,255,0.6);
+  margin:0.8rem 0 2rem;
+  line-height:1.5;
+  font-weight:400;
+}
+.subtitle strong{color:var(--neon);font-weight:600;}
+
+/* STATS ROW */
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  margin-bottom:2rem;
+}
+.stat{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem 0.8rem;
+  text-align:center;
+}
+.stat-val{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.8rem;
+  color:var(--neon);
+  line-height:1;
+}
+.stat-lbl{font-size:0.72rem;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase;margin-top:3px;}
+
+/* SIGNAL CARD */
+.signal-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1.4rem;
+  margin-bottom:2rem;
+  position:relative;
+  overflow:hidden;
+}
+.signal-card::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--neon),transparent);
+}
+.signal-header{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;
+}
+.signal-title{font-size:0.7rem;letter-spacing:2px;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+.live-badge{
+  background:rgba(0,255,136,0.15);
+  border:1px solid rgba(0,255,136,0.4);
+  color:var(--neon);
+  font-size:0.65rem;
+  letter-spacing:1.5px;
+  padding:3px 10px;
+  border-radius:20px;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:5px;
+}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--neon);animation:pulse 1s infinite;}
+.signal-pair{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:2rem;
+  letter-spacing:2px;
+  color:#fff;
+  margin-bottom:0.3rem;
+}
+.signal-dir{
+  font-size:0.85rem;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+.up{color:#00ff88;}
+.down{color:#ff4d6d;}
+.signal-meta{
+  display:flex;gap:1.5rem;margin-top:0.8rem;
+  font-size:0.78rem;color:rgba(255,255,255,0.45);
+}
+.signal-meta span{display:flex;align-items:center;gap:4px;}
+.conf-bar-wrap{margin-top:1rem;}
+.conf-label{
+  display:flex;justify-content:space-between;
+  font-size:0.7rem;color:rgba(255,255,255,0.4);
+  text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;
+}
+.conf-bar{height:5px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
+.conf-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#00e5ff,var(--neon));width:87%;}
+
+/* FEATURES */
+.features{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2rem;
+}
+.feature{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:1rem;
+}
+.feature-icon{font-size:1.4rem;margin-bottom:0.4rem;}
+.feature-title{font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:2px;}
+.feature-desc{font-size:0.75rem;color:rgba(255,255,255,0.45);line-height:1.4;}
+
+/* CTA BUTTONS */
+.cta-group{display:flex;flex-direction:column;gap:12px;margin-bottom:2rem;}
+.btn-main{
+  display:block;
+  background:var(--neon);
+  color:var(--dark);
+  text-decoration:none;
+  text-align:center;
+  padding:1rem;
+  border-radius:10px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.4rem;
+  letter-spacing:2px;
+  font-weight:400;
+  transition:box-shadow 0.2s, transform 0.1s;
+}
+.btn-main:hover{box-shadow:var(--glow);transform:translateY(-1px);}
+.btn-sec{
+  display:block;
+  background:transparent;
+  color:var(--neon);
+  text-decoration:none;
+  text-align:center;
+  padding:0.9rem;
+  border-radius:10px;
+  border:1px solid rgba(0,255,136,0.4);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;
+  letter-spacing:2px;
+  transition:background 0.2s, box-shadow 0.2s;
+}
+.btn-sec:hover{background:rgba(0,255,136,0.08);box-shadow:0 0 12px rgba(0,255,136,0.2);}
+
+/* DISCLAIMER */
+.disclaimer{
+  font-size:0.68rem;
+  color:rgba(255,255,255,0.25);
+  line-height:1.5;
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding-top:1.2rem;
+  text-align:center;
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="wrapper">
+
+  <div class="badge">⚡ Acesso gratuito</div>
+
+  <div class="logo-line">
+    <div class="logo-dot"></div>
+    <span style="font-size:0.75rem;letter-spacing:2px;color:rgba(255,255,255,0.35);text-transform:uppercase;">Avalon Elites</span>
+  </div>
+
+  <h1>Sinais de<br><span>Opções Binárias</span><br>em tempo real</h1>
+
+  <p class="subtitle">IA analisa <strong>RSI, tendência e volume</strong> e gera sinais automáticos de alta precisão — direto no seu Telegram, a cada hora.</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-val">87%</div>
+      <div class="stat-lbl">Precisão</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">1H</div>
+      <div class="stat-lbl">Novo sinal</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">3</div>
+      <div class="stat-lbl">Idiomas</div>
+    </div>
+  </div>
+
+  <div class="signal-card">
+    <div class="signal-header">
+      <span class="signal-title">Último sinal gerado</span>
+      <span class="live-badge"><span class="live-dot"></span>Ao vivo</span>
+    </div>
+    <div class="signal-pair">EUR/USD · 5min</div>
+    <div class="signal-dir up">▲ CALL — Compra</div>
+    <div class="signal-meta">
+      <span>📊 RSI: 34.2</span>
+      <span>📈 Tendência: Alta</span>
+      <span>🕐 14:00</span>
+    </div>
+    <div class="conf-bar-wrap">
+      <div class="conf-label"><span>Confiança da IA</span><span>87%</span></div>
+      <div class="conf-bar"><div class="conf-fill"></div></div>
+    </div>
+  </div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-title">IA automática</div>
+      <div class="feature-desc">Análise técnica em tempo real a cada hora</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🌍</div>
+      <div class="feature-title">3 idiomas</div>
+      <div class="feature-desc">PT 🇧🇷 · EN 🇺🇸 · ES 🇪🇸 automático</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">💰</div>
+      <div class="feature-title">Plataforma top</div>
+      <div class="feature-desc">Opere na Avalon Broker com bônus</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🔔</div>
+      <div class="feature-title">100% grátis</div>
+      <div class="feature-desc">Sem taxa, sem mensalidade</div>
+    </div>
+  </div>
+
+  <div class="cta-group">
+    <a href="https://t.me/AvalonLucro_bot" class="btn-main">🤖 Acessar o Bot de Sinais</a>
+    <a href="https://t.me/joinchat/avalon_elites" class="btn-sec">💬 Entrar no Grupo Avalon Elites</a>
+    <a href="https://trade.avalonbroker.com/register?aff=823507&aff_model=revenue&afftrack=" class="btn-main" style="background:transparent;color:var(--neon2);border:1px solid rgba(0,229,255,0.35);font-size:1.1rem;">📈 Criar conta na Avalon Broker →</a>
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ <strong>Aviso de risco:</strong> Opções binárias envolvem risco elevado de perda de capital. Os sinais são gerados por análise técnica automatizada e não garantem lucros. Opere somente com valores que pode perder. Este canal não é afiliado oficial da Avalon Broker.
+  </div>
+
+</div>
+</body>
+</html>
